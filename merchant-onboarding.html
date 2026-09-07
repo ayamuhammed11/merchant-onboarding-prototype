@@ -149,6 +149,35 @@
   .whn-count { font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 6px; }
   .whn-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border-subtle); }
 
+  /* Step 4 — Pricing */
+  .price-service { padding: 16px 4px; border-bottom: 1px solid var(--border-subtle); }
+  .price-service:last-child { border-bottom: none; }
+  .price-service-name { font-weight: 700; font-size: 14px; color: var(--foreground); margin-bottom: 10px; }
+  .price-tier { border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px; margin-bottom: 10px; background: #FAFBFC; }
+  .price-tier:last-child { margin-bottom: 0; }
+  .price-tier-label { font-weight: 700; font-size: 13px; color: var(--foreground); }
+  .price-tier-desc { font-size: 12px; color: var(--cadet-05); margin: 2px 0 10px; }
+  .price-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; }
+  .price-stat { background: #fff; border: 1px solid var(--border-subtle); border-radius: 6px; padding: 8px 10px; }
+  .price-stat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--cadet-05); }
+  .price-stat-value { font-size: 14px; font-weight: 700; color: var(--foreground); margin-top: 2px; }
+  .rate-tier-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .rate-tier-chip { border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: 12.5px; font-weight: 700;
+    font-family: inherit; color: var(--cadet-base); background: #fff; cursor: pointer; display: flex; flex-direction: column;
+    align-items: flex-start; gap: 1px; transition: border-color .12s ease, background .12s ease, color .12s ease; }
+  .rate-tier-chip .rtc-sub { font-weight: 400; font-size: 11px; color: var(--cadet-05); }
+  .rate-tier-chip:hover { border-color: var(--cadet-05); }
+  .rate-tier-chip.auto.on { border-color: var(--success); background: var(--success-bg); color: var(--success-80); }
+  .rate-tier-chip.auto.on .rtc-sub { color: var(--success-80); }
+  .rate-tier-chip.manager.on { border-color: var(--warning); background: var(--warning-bg); color: var(--warning-text); }
+  .rate-tier-chip.manager.on .rtc-sub { color: var(--warning-text); }
+  .rate-tier-chip.head.on { border-color: var(--destructive); background: var(--destructive-bg); color: var(--destructive); }
+  .rate-tier-chip.head.on .rtc-sub { color: var(--destructive); }
+  .price-note { margin-top: 10px; }
+  .price-note textarea.inp { height: auto; min-height: 60px; padding: 10px 12px; resize: vertical; }
+  .price-note-hint { font-size: 11px; color: var(--cadet-05); margin-top: 4px; }
+  .price-empty { font-size: 13px; color: var(--cadet-05); padding: 8px 4px; }
+
   /* Required-document cards inside the agent-assisted upload panel */
   .req-item { padding: 18px 4px; border-bottom: 1px solid var(--border-subtle); }
   .req-item:last-child { border-bottom: none; }
@@ -376,10 +405,6 @@
           <div id="whnList"></div>
 
           <div class="whn-actions">
-            <button class="btn btn-outline" id="previewMerchantBtn">
-              <svg class="hi-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
-              Preview Merchant's Upload Experience
-            </button>
             <button class="btn btn-primary" id="assistUploadBtn">
               <svg class="hi-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/></svg>
               Upload Documents Now (Agent-Assisted)
@@ -402,6 +427,21 @@
               <button class="btn btn-primary" id="createAppBtn">Create Merchant Application</button>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 — Pricing -->
+      <div class="card">
+        <div class="card-head">
+          <svg class="hi ch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m3.75-9.75a2.625 2.625 0 0 0-2.625-1.5H11.25a2.25 2.25 0 0 0 0 4.5h1.5a2.25 2.25 0 0 1 0 4.5h-2.125a2.625 2.625 0 0 1-2.625-1.5"/></svg>
+          <div>
+            <h2>4. Pricing — Rate Selection</h2>
+            <p class="ch-sub">Rates are matched from the Pricing Rules module using the criteria above. Pick the rate to onboard this merchant at for each service — anything below Auto needs an approval note.</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="whn-count" id="pricingCount">0 of 0 rates selected</div>
+          <div id="pricingList"></div>
         </div>
       </div>
 
@@ -510,6 +550,98 @@
     });
     return map;
   }
+
+  /* ══════════ Pricing lookup — mirrors the Pricing Rules module (Service + Industry + Merchant Type + Bank).
+     Prototype simplification: these two rate sets apply universally across industry/bank/merchant type — the
+     real module requires an exact match per combination — so every selected service always has a rate here. ══════════ */
+  const CARD_RATE_TIERS = [
+    { key: 'national-onus',  label: 'National — On-us rate',  desc: 'Cards issued by the acquiring bank.',         fixedFee: 2,   standard: 1.5, manager: 1,   head: 0.5 },
+    { key: 'national-offus', label: 'National — Off-us rate', desc: 'Cards issued by any other local bank.',       fixedFee: 2,   standard: 2,   manager: 1.5, head: 1 },
+    { key: 'meeza-onus',     label: 'Meeza — On-us rate',     desc: 'Meeza cards issued by the acquiring bank.',   fixedFee: 1.5, standard: 1.2, manager: 0.9, head: 0.6 },
+    { key: 'meeza-offus',    label: 'Meeza — Off-us rate',    desc: 'Meeza cards issued by any other local bank.', fixedFee: 1.8, standard: 1.4, manager: 1.1, head: 0.8 },
+    { key: 'intl',           label: 'International rate',     desc: 'Cards issued outside Egypt.',                 fixedFee: 3,   standard: 2.5, manager: 2,   head: 1.5 },
+  ];
+  const DEFAULT_RATE_TIERS = [
+    { key: 'selling', label: 'Selling rate', desc: 'The percentage Kashier charges per transaction.', fixedFee: 1.5, standard: 1, manager: 0.75, head: 0.5 },
+  ];
+  const ratesForService = service => service.includes('Card') ? CARD_RATE_TIERS : DEFAULT_RATE_TIERS;
+
+  const pricingSelections = new Map(); // `${service}::${tierKey}` -> { tier: 'auto'|'manager'|'head', note }
+  const priceKey = (service, tierKey) => service + '::' + tierKey;
+
+  function priceTierHTML(service, t) {
+    const key = priceKey(service, t.key);
+    const sel = pricingSelections.get(key) || { tier: 'auto', note: '' };
+    const chip = (tier, cls, label, sub) => `<button type="button" class="rate-tier-chip ${cls}${sel.tier === tier ? ' on' : ''}" data-service="${esc(service)}" data-key="${esc(t.key)}" data-tier="${tier}">${label}<span class="rtc-sub">${esc(sub)}</span></button>`;
+    const needsNote = sel.tier !== 'auto';
+    return `<div class="price-tier">
+      <div class="price-tier-label">${esc(t.label)}</div>
+      <div class="price-tier-desc">${esc(t.desc)}</div>
+      <div class="price-stats">
+        <div class="price-stat"><div class="price-stat-label">Fixed Fee</div><div class="price-stat-value">${t.fixedFee} EGP</div></div>
+        <div class="price-stat"><div class="price-stat-label">Standard</div><div class="price-stat-value">${t.standard}%</div></div>
+        <div class="price-stat"><div class="price-stat-label">Manager approval</div><div class="price-stat-value">${t.manager}%</div></div>
+        <div class="price-stat"><div class="price-stat-label">Head approval</div><div class="price-stat-value">${t.head}%</div></div>
+      </div>
+      <div class="rate-tier-chips">
+        ${chip('auto', 'auto', 'Auto', t.standard + '% and above')}
+        ${chip('manager', 'manager', 'Manager approval', t.manager + '%–under ' + t.standard + '%')}
+        ${chip('head', 'head', 'Head approval', 'under ' + t.manager + '%')}
+      </div>
+      ${needsNote ? `<div class="price-note">
+        <textarea class="inp${sel.note.trim() ? '' : ' invalid'}" placeholder="Why does this merchant need a ${sel.tier === 'manager' ? 'Manager' : 'Head'}-approved rate?" data-service="${esc(service)}" data-key="${esc(t.key)}">${esc(sel.note)}</textarea>
+        <div class="price-note-hint">Required — this rate needs ${sel.tier === 'manager' ? 'Manager' : 'Head'} sign-off before the application can be created.</div>
+      </div>` : ''}
+    </div>`;
+  }
+  function priceServiceHTML(service) {
+    return `<div class="price-service" data-service="${esc(service)}">
+      <div class="price-service-name">${esc(service)}</div>
+      ${ratesForService(service).map(t => priceTierHTML(service, t)).join('')}
+    </div>`;
+  }
+  function pricingStats() {
+    let total = 0, needsApproval = 0;
+    if (criteria.module && criteria.industry && criteria.bank) {
+      criteria.services.forEach(s => ratesForService(s).forEach(t => {
+        total++;
+        const sel = pricingSelections.get(priceKey(s, t.key));
+        if (sel && sel.tier !== 'auto') needsApproval++;
+      }));
+    }
+    return { total, needsApproval };
+  }
+  function updatePricingCount() {
+    const { total, needsApproval } = pricingStats();
+    $('pricingCount').textContent = total
+      ? total + ' rate line item' + (total === 1 ? '' : 's') + (needsApproval ? ' · ' + needsApproval + ' pending approval' : '')
+      : '0 of 0 rates selected';
+  }
+  function renderPricing() {
+    [...pricingSelections.keys()].forEach(k => { if (!criteria.services.includes(k.split('::')[0])) pricingSelections.delete(k); });
+    const ready = criteria.module && criteria.industry && criteria.bank && criteria.services.length;
+    $('pricingList').innerHTML = ready
+      ? criteria.services.map(priceServiceHTML).join('')
+      : '<div class="price-empty">Select merchant type, industry, bank and at least one service above to see applicable rates.</div>';
+    updatePricingCount();
+  }
+  $('pricingList').addEventListener('click', e => {
+    const chip = e.target.closest('.rate-tier-chip');
+    if (!chip) return;
+    const { service, key, tier } = chip.dataset;
+    const cur = pricingSelections.get(priceKey(service, key)) || { tier: 'auto', note: '' };
+    pricingSelections.set(priceKey(service, key), { tier, note: cur.note });
+    renderPricing();
+  });
+  $('pricingList').addEventListener('input', e => {
+    const ta = e.target.closest('textarea');
+    if (!ta) return;
+    const { service, key } = ta.dataset;
+    const cur = pricingSelections.get(priceKey(service, key)) || { tier: 'auto', note: '' };
+    pricingSelections.set(priceKey(service, key), { tier: cur.tier, note: ta.value });
+    ta.classList.toggle('invalid', !ta.value.trim());
+    updatePricingCount();
+  });
 
   /* ══════════ Step 2 — chip groups ══════════ */
   function renderSingleChips(containerId, options, key) {
@@ -682,6 +814,7 @@
 
   function onCriteriaChange() {
     computeAndRenderWHN();
+    renderPricing();
     if (!$('assistPanel').hidden) renderAssistPanel();
     if (!$('linkPanel').hidden) refreshAppLink();
   }
@@ -705,10 +838,6 @@
     return url;
   }
 
-  $('previewMerchantBtn').addEventListener('click', () => {
-    toast("Opening the merchant's onboarding experience in a new tab…");
-    window.open(buildMerchantLink(), '_blank');
-  });
   function fallbackCopy() {
     try { document.execCommand('copy'); toast('Link copied'); }
     catch (e) { toast('Copy failed — the link is selected, press Ctrl+C'); }
@@ -801,6 +930,7 @@
   /* ══════════ Init ══════════ */
   renderCriteria();
   computeAndRenderWHN();
+  renderPricing();
   renderEvents();
 </script>
 

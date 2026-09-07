@@ -123,7 +123,9 @@
   .crit-select { height: 42px; border: 1.5px solid var(--border); border-radius: 8px; padding: 0 12px; font-family: inherit;
     font-size: 13.5px; color: var(--foreground); background: #fff; cursor: pointer; }
   .crit-select:focus { outline: none; border-color: var(--primary); }
+  .crit-select.invalid { border-color: var(--destructive); }
   .crit-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .crit-chips.invalid .crit-chip { border-color: var(--destructive); }
   /* Services picker mirrors the Kashier Services portal: Basic / Add-on tiers. */
   .svc-group { margin-bottom: 14px; }
   .svc-group:last-child { margin-bottom: 0; }
@@ -915,6 +917,17 @@
       $('mBiz').closest('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
       return;
     }
+    const critChecks = [['critEntity', criteria.entity], ['critIndustry', criteria.industry], ['critBank', criteria.bank], ['critModule', criteria.module]];
+    let critOk = true;
+    critChecks.forEach(([id, val]) => {
+      $(id).classList.toggle('invalid', !val);
+      if (!val) critOk = false;
+    });
+    if (!critOk) {
+      toast('Fill in Merchant Type, Industry, Financial Institution and Settlement type first');
+      $('critEntity').closest('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
     const { unresolved, needsApproval } = approvalStatus();
     if (unresolved) {
       toast('Add an approval note for every rate below Auto before submitting');
@@ -943,6 +956,7 @@
     ['mBiz', 'mEmail', 'mPhone'].forEach(id => $(id).classList.remove('invalid'));
     criteria.entity = ''; criteria.owner = ''; criteria.industry = ''; criteria.bank = ''; criteria.module = ''; criteria.services = [];
     $('critIndustry').value = ''; $('critBank').value = '';
+    ['critEntity', 'critIndustry', 'critBank', 'critModule'].forEach(id => $(id).classList.remove('invalid'));
     pricingSelections.clear();
     $('assistPanel').hidden = true;
     $('assistList').innerHTML = '';

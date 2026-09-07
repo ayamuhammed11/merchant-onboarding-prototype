@@ -228,29 +228,24 @@
     border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .dz-fchip .rm:hover { color: var(--destructive); background: var(--destructive-bg); }
 
-  .link-panel { background: var(--ocean-10); border: 1px solid var(--ocean-07); border-radius: 8px;
-    padding: 16px; margin-top: 18px; }
-  .link-panel[hidden] { display: none; }
-  .link-panel-title { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
-  .link-row { display: flex; gap: 10px; }
-  .link-input { flex: 1; font-size: 13px; color: var(--cadet-base); background: #fff; cursor: text; }
-  .link-hint { font-size: 12px; color: var(--cadet-04); margin: 10px 0 0; line-height: 1.5; }
 
   .assist-panel { border-top: 1px dashed var(--border); margin-top: 18px; padding-top: 18px; }
   .assist-summary { font-size: 13px; font-weight: 600; color: var(--cadet-base); margin-bottom: 10px; }
 
-  /* Events feed */
-  .event-item { display: flex; align-items: flex-start; gap: 16px; padding: 18px 4px; border-bottom: 1px solid var(--border-subtle); }
-  .event-item:last-child { border-bottom: none; }
-  .ev-icon { width: 40px; height: 40px; border-radius: 50%; background: #E3E5E5; color: var(--cadet-base);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .ev-icon svg { width: 17px; height: 17px; }
-  .ev-icon.created { background: var(--success-bg); color: var(--success-80); }
-  .ev-icon.pending { background: var(--warning-bg); color: var(--warning-text); }
-  .ev-body { min-width: 0; padding-top: 1px; }
-  .ev-ts { font-size: 13px; color: var(--cadet-04); }
-  .ev-sentence { font-size: 14px; color: var(--cadet-04); margin-top: 7px; line-height: 1.45; }
-  .ev-sentence b { font-weight: 700; color: var(--foreground); }
+  /* Submitted Applications — card grid */
+  .apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(258px, 1fr)); gap: 14px; }
+  .app-card { border: 1px solid var(--border-subtle); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .app-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .app-card-name { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 15px; color: var(--foreground); line-height: 1.3; }
+  .app-card-ts { font-size: 11.5px; color: var(--cadet-05); margin-top: 3px; }
+  .app-card-facts { display: flex; flex-direction: column; gap: 6px; }
+  .app-fact { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: 12.5px; }
+  .app-fact .lbl { color: var(--cadet-05); flex-shrink: 0; }
+  .app-fact .val { font-weight: 600; color: var(--foreground); text-align: right; }
+  .app-card-actor { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 11.5px;
+    color: var(--cadet-05); border-top: 1px dashed var(--border); padding-top: 10px; }
+  .app-link-btn { border: none; background: none; padding: 0; font-family: inherit; font-size: 11.5px; font-weight: 600;
+    color: var(--primary); text-decoration: underline; cursor: pointer; }
   .events-empty { display: none; text-align: center; font-size: 13px; color: var(--cadet-05); padding: 26px 0 14px; }
   .events-empty.show { display: block; }
 
@@ -423,15 +418,6 @@
             </button>
           </div>
 
-          <div class="link-panel" id="linkPanel" hidden>
-            <div class="link-panel-title">Application link for the merchant</div>
-            <div class="link-row">
-              <input class="inp link-input" id="appLinkInput" type="text" readonly>
-              <button class="btn btn-outline" id="copyLinkBtn">Copy Link</button>
-            </div>
-            <p class="link-hint">Opening this link pre-fills the merchant's Documents page with the criteria and services entered above — nothing is typed twice.</p>
-          </div>
-
           <div class="assist-panel" id="assistPanel" hidden>
             <div class="assist-summary" id="assistCount">0 of 0 attached</div>
             <div id="assistList"></div>
@@ -471,18 +457,18 @@
         </div>
       </div>
 
-      <!-- ══════════ Events ══════════ -->
+      <!-- ══════════ Submitted Applications ══════════ -->
       <div class="card">
         <div class="card-head">
           <svg class="hi ch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z"/></svg>
           <div>
-            <h2>Events</h2>
-            <p class="ch-sub">Full audit trail of this application's creation — every application submitted from this page is recorded here.</p>
+            <h2>Submitted Applications</h2>
+            <p class="ch-sub">Every application submitted from this page, with its live status — review the criteria, documents and pricing approvals for each.</p>
           </div>
         </div>
         <div class="card-body">
-          <div id="eventsList"></div>
-          <div class="events-empty" id="eventsEmpty">No events recorded yet — creating an application will appear here.</div>
+          <div class="apps-grid" id="appsList"></div>
+          <div class="events-empty" id="eventsEmpty">No applications submitted yet — create one above and it will appear here.</div>
         </div>
       </div>
 
@@ -844,7 +830,6 @@
     computeAndRenderWHN();
     renderPricing();
     if (!$('assistPanel').hidden) renderAssistPanel();
-    if (!$('linkPanel').hidden) refreshAppLink();
     renderSubmitSummary();
   }
 
@@ -861,24 +846,24 @@
     if (criteria.services.length) p.set('services', criteria.services.join(','));
     return 'documents-upload.html' + (p.toString() ? '?' + p.toString() : '');
   }
-  function refreshAppLink() {
-    const url = new URL(buildMerchantLink(), location.href).href;
-    $('appLinkInput').value = url;
-    return url;
-  }
-
-  function fallbackCopy() {
+  function fallbackCopy(val) {
+    const ta = document.createElement('textarea');
+    ta.value = val; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
     try { document.execCommand('copy'); toast('Link copied'); }
-    catch (e) { toast('Copy failed — the link is selected, press Ctrl+C'); }
+    catch (e) { toast('Copy failed'); }
+    ta.remove();
   }
-  $('copyLinkBtn').addEventListener('click', () => {
-    const val = $('appLinkInput').value;
-    $('appLinkInput').select();
+  function copyLink(val) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(val).then(() => toast('Link copied'), fallbackCopy);
+      navigator.clipboard.writeText(val).then(() => toast('Link copied'), () => fallbackCopy(val));
     } else {
-      fallbackCopy();
+      fallbackCopy(val);
     }
+  }
+  $('appsList').addEventListener('click', e => {
+    const btn = e.target.closest('.app-link-btn');
+    if (btn) copyLink(btn.dataset.link);
   });
   $('assistUploadBtn').addEventListener('click', () => {
     const panel = $('assistPanel');
@@ -938,47 +923,78 @@
       return;
     }
     const { total, done } = currentDocStatus();
-    appStatus = needsApproval ? 'pending-rate-approval' : 'pending-onboarding-review';
+    const status = needsApproval ? 'pending-rate-approval' : 'pending-onboarding-review';
     toast('Application created for ' + biz + (needsApproval
       ? ` — sent for ${needsApproval} rate approval${needsApproval === 1 ? '' : 's'} before the Onboarding team reviews it`
       : ' — sent to the Onboarding team for review'));
-    logEvent(biz, total, done, appStatus);
-    renderSubmitSummary();
-    $('submitAppBtn').textContent = 'Application Submitted ✓';
-    $('submitAppBtn').disabled = true;
-
-    $('linkPanel').hidden = false;
-    refreshAppLink();
-    $('submitSummary').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    logEvent({
+      biz, email, phone,
+      entity: criteria.entity, owner: criteria.owner, industry: criteria.industry, bank: criteria.bank, module: criteria.module,
+      services: [...criteria.services],
+      link: new URL(buildMerchantLink(), location.href).href,
+      total, done, needsApproval, status,
+    });
+    resetForm();
+    $('appsList').scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
-  /* ══════════ Events (audit trail) ══════════ */
+  function resetForm() {
+    $('mBiz').value = ''; $('mEmail').value = ''; $('mPhone').value = '';
+    ['mBiz', 'mEmail', 'mPhone'].forEach(id => $(id).classList.remove('invalid'));
+    criteria.entity = ''; criteria.owner = ''; criteria.industry = ''; criteria.bank = ''; criteria.module = ''; criteria.services = [];
+    $('critIndustry').value = ''; $('critBank').value = '';
+    pricingSelections.clear();
+    $('assistPanel').hidden = true;
+    $('assistList').innerHTML = '';
+    $('assistUploadBtn').lastChild.textContent = ' Upload Documents Now (Agent-Assisted)';
+    appStatus = 'draft';
+    $('submitAppBtn').textContent = 'Create Merchant Application';
+    $('submitAppBtn').disabled = false;
+    renderCriteria();
+    computeAndRenderWHN();
+    renderPricing();
+  }
+
+  /* ══════════ Submitted Applications ══════════ */
   const CURRENT_USER = 'Aya Muhammed';
-  const events = [];
-  const PENCIL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125"/></svg>';
+  const applications = [];
   function formatEventTime(d) {
     const p = n => String(n).padStart(2, '0');
     let h = d.getHours(); const ampm = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
     return p(d.getMonth() + 1) + '/' + p(d.getDate()) + '/' + d.getFullYear() + '. ' + p(h) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds()) + ' ' + ampm;
   }
-  function logEvent(bizName, total, done, status) {
-    events.unshift({ ts: new Date(), bizName, total, done, actor: CURRENT_USER, status });
-    renderEvents();
+  function logEvent(record) {
+    applications.unshift({ ts: new Date(), actor: CURRENT_USER, ...record });
+    renderAppsList();
   }
-  function renderEvents() {
-    $('eventsEmpty').classList.toggle('show', events.length === 0);
-    $('eventsList').innerHTML = events.map(ev => {
-      const pending = ev.status === 'pending-rate-approval';
-      const tail = pending ? 'for rate approval' : 'to the Onboarding team for review';
-      return `
-      <div class="event-item">
-        <div class="ev-icon ${pending ? 'pending' : 'created'}">${PENCIL_ICON}</div>
-        <div class="ev-body">
-          <div class="ev-ts">${formatEventTime(ev.ts)}</div>
-          <div class="ev-sentence"><b>${esc(ev.actor)}</b> submitted <b>${esc(ev.bizName)}</b>'s application ${tail} — ${ev.done} of ${ev.total} documents attached</div>
+  function appCardHTML(app) {
+    const meta = STATUS_META[app.status] || STATUS_META.draft;
+    const servicesLabel = app.services.length ? app.services.length + ' service' + (app.services.length === 1 ? '' : 's') : '—';
+    return `<div class="app-card">
+      <div class="app-card-top">
+        <div>
+          <div class="app-card-name">${esc(app.biz)}</div>
+          <div class="app-card-ts">${formatEventTime(app.ts)}</div>
         </div>
-      </div>`;
-    }).join('');
+        <span class="status-pill ${meta.cls}"><span class="dot"></span>${meta.label}</span>
+      </div>
+      <div class="app-card-facts">
+        <div class="app-fact"><span class="lbl">Merchant Type</span><span class="val">${esc(app.module || '—')}</span></div>
+        <div class="app-fact"><span class="lbl">Industry</span><span class="val">${esc(app.industry || '—')}</span></div>
+        <div class="app-fact"><span class="lbl">Bank</span><span class="val">${esc(app.bank || '—')}</span></div>
+        <div class="app-fact"><span class="lbl">Services</span><span class="val">${servicesLabel}</span></div>
+        <div class="app-fact"><span class="lbl">Documents</span><span class="val">${app.done} of ${app.total} attached</span></div>
+        <div class="app-fact"><span class="lbl">Pricing</span><span class="val">${app.needsApproval ? app.needsApproval + ' rate' + (app.needsApproval === 1 ? '' : 's') + ' pending' : 'All Auto'}</span></div>
+      </div>
+      <div class="app-card-actor">
+        <span>Submitted by ${esc(app.actor)}</span>
+        <button type="button" class="app-link-btn" data-link="${esc(app.link)}">Copy merchant link</button>
+      </div>
+    </div>`;
+  }
+  function renderAppsList() {
+    $('eventsEmpty').classList.toggle('show', applications.length === 0);
+    $('appsList').innerHTML = applications.map(appCardHTML).join('');
   }
 
   /* ══════════ Chrome ══════════ */
@@ -1001,7 +1017,7 @@
   renderCriteria();
   computeAndRenderWHN();
   renderPricing();
-  renderEvents();
+  renderAppsList();
 </script>
 
 <script>
